@@ -10,44 +10,66 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://upload.wikimedia.org" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
-  <div class="announce">Free shipping across the EU &amp; US over €100 · Printed in Portugal</div>
-
+<body class="home">
   <header class="site-header">
-    <nav class="nav-left">
-      <a href="#shop">Shop</a>
-      <a href="#manifesto">Manifesto</a>
-    </nav>
-    <a class="wordmark" href="index.html" aria-label="Europa Culture home">Europa<span>·</span>Culture</a>
-    <nav class="nav-right">
-      <a href="#journal" class="hide-sm">Journal</a>
-      <a href="#" data-open-cart class="bag">Bag (<span data-cart-count>0</span>)</a>
-    </nav>
+    <div class="announce">Free shipping across the EU &amp; US over €100 · 30-day returns</div>
+    <div class="nav-row">
+      <nav class="nav-left">
+        <a href="shop.html">Shop all</a>
+        <a href="index.html#manifesto" class="hide-sm">Manifesto</a>
+      </nav>
+      <a class="wordmark" href="index.html" aria-label="Europa Culture home">Europa<span>·</span>Culture</a>
+      <nav class="nav-right">
+        <a href="index.html#journal" class="hide-sm">Journal</a>
+        <a href="#" data-open-cart class="bag">Bag (<span data-cart-count>0</span>)</a>
+      </nav>
+    </div>
   </header>
 
   <main>
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow reveal">Collection I — Paris</p>
-        <h1 class="reveal">Make<br>Architecture<br><em>Great Again.</em></h1>
-        <p class="lede reveal">Garments for people who believe buildings should be beautiful — and that a city is a promise between generations.</p>
-        <div class="hero-cta reveal">
-          <a href="#shop" class="btn btn-solid">Shop the collection</a>
-          <a href="#manifesto" class="btn btn-line">Read the manifesto</a>
+    <section class="hero" aria-label="European architecture">
+      <div id="hero-slides" class="hero-slides"></div>
+      <div class="hero-shade"></div>
+      <div class="hero-content">
+        <p class="eyebrow light">Europa Culture — Collection I</p>
+        <h1>Make Architecture<br><em>Great Again.</em></h1>
+        <p class="lede">Garments for people who believe buildings should be beautiful — and that a city is a promise between generations.</p>
+        <div class="hero-cta">
+          <a href="#featured" class="btn btn-light">Shop the collection</a>
+          <a href="index.html#manifesto" class="btn btn-ghost">Read the manifesto</a>
         </div>
       </div>
-      <div class="hero-art">
-        <div id="hero-art"></div>
-        <div class="hero-tee" id="hero-tee"></div>
-        <p class="caption">Fig. I — West façade, study in line</p>
+      <div class="hero-foot">
+        <div class="hero-place"><span id="hero-place"></span><small id="hero-city"></small></div>
+        <div class="hero-bars" id="hero-bars"></div>
+        <div class="hero-nav">
+          <span id="hero-count" class="hero-count"></span>
+          <button id="hero-prev" class="circle" aria-label="Previous image"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button id="hero-next" class="circle" aria-label="Next image"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
       </div>
     </section>
 
-    <!-- MARQUEE -->
+    <section class="featured" id="featured">
+      <div class="feat-head">
+        <div>
+          <p class="eyebrow">Featured pieces</p>
+          <h2>The Collection</h2>
+        </div>
+        <div class="feat-actions">
+          <button id="feat-prev" class="circle dark" aria-label="Previous products"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button id="feat-next" class="circle dark" aria-label="Next products"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9 5l7 7-7 7"/></svg></button>
+          <a href="shop.html" class="btn btn-solid">Shop all</a>
+        </div>
+      </div>
+      <div class="feat-track" id="feature-track"></div>
+      <div class="feat-progress"><span id="feat-line"></span></div>
+    </section>
+
     <div class="marquee" aria-hidden="true">
       <div class="marquee-track">
         <span>Make Architecture Great Again</span><span>✦</span><span>Ornament Is Not A Crime</span><span>✦</span><span>Bring Back Beauty</span><span>✦</span>
@@ -55,36 +77,27 @@
       </div>
     </div>
 
-    <!-- SHOP -->
-    <section class="section" id="shop">
-      <div class="section-head">
-        <h2>The Collection</h2>
-        <p>Six pieces. One conviction. Heavyweight organic cotton, printed in classical serif.</p>
-      </div>
-      <div class="grid" id="product-grid"></div>
-    </section>
-
-    <!-- MANIFESTO -->
     <section class="section manifesto" id="manifesto">
-      <div class="section-head">
+      <div class="manifesto-head">
         <p class="eyebrow">The Manifesto</p>
-        <h2>Four principles,<br>set in stone.</h2>
+        <h2>Four principles,<br><em>set in stone.</em></h2>
       </div>
       <ol class="tenets">
         <li class="reveal"><span>I.</span><h3>Proportion</h3><p>The golden section was not a trend. Harmony is measurable, and people feel it before they can name it.</p></li>
-        <li class="reveal"><span>II.</span><h3>Ornament</h3><p>Detail is a gift to the passer-by. A carved capital costs once and gives for centuries.</p></li>
-        <li class="reveal"><span>III.</span><h3>Permanence</h3><p>Build for the grandchildren of strangers. Stone over cladding, craft over cost-per-square-metre.</p></li>
-        <li class="reveal"><span>IV.</span><h3>Place</h3><p>A street in Paris should not look like a street in Phoenix. Local stone, local style, local pride.</p></li>
+        <li class="reveal" style="--d:80ms"><span>II.</span><h3>Ornament</h3><p>Detail is a gift to the passer-by. A carved capital costs once and gives for centuries.</p></li>
+        <li class="reveal" style="--d:160ms"><span>III.</span><h3>Permanence</h3><p>Build for the grandchildren of strangers. Stone over cladding, craft over cost-per-square-metre.</p></li>
+        <li class="reveal" style="--d:240ms"><span>IV.</span><h3>Place</h3><p>A street in Paris should not look like a street anywhere else. Local stone, local style, local pride.</p></li>
       </ol>
     </section>
 
-    <!-- QUOTE -->
-    <section class="quote reveal" id="journal">
-      <blockquote>“We shape our buildings;<br>thereafter they shape us.”</blockquote>
-      <cite>— Winston Churchill, 1943</cite>
+    <section class="quote" id="journal">
+      <div class="quote-bg" style="background-image:url(&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Il_Duomo_Florence_Italy.JPG/1920px-Il_Duomo_Florence_Italy.JPG&quot;)"></div>
+      <div class="quote-inner reveal">
+        <blockquote>“We shape our buildings;<br>thereafter they shape us.”</blockquote>
+        <cite>— Winston Churchill, 1943</cite>
+      </div>
     </section>
 
-    <!-- SIGNUP -->
     <section class="section signup-wrap">
       <div>
         <h2>Join the movement.</h2>
@@ -101,14 +114,14 @@
   <footer class="site-footer">
     <div class="foot-brand">Europa<span>·</span>Culture</div>
     <div class="foot-cols">
-      <div><h4>Shop</h4><a href="#shop">All pieces</a><a href="product.html?id=maga-tee-black">The original tee</a><a href="product.html?id=maga-hoodie-black">Hoodie</a></div>
-      <div><h4>House</h4><a href="#manifesto">Manifesto</a><a href="#journal">Journal</a><a href="mailto:hello@europaculture.com">Contact</a></div>
+      <div><h4>Shop</h4><a href="shop.html">Shop all</a><a href="product.html?id=maga-tee-black">The original tee</a><a href="product.html?id=maga-hoodie-black">Hoodie</a></div>
+      <div><h4>House</h4><a href="index.html#manifesto">Manifesto</a><a href="index.html#journal">Journal</a><a href="mailto:hello@europaculture.com">Contact</a></div>
       <div><h4>Help</h4><a href="#">Shipping</a><a href="#">Returns</a><a href="#">Size guide</a></div>
     </div>
-    <p class="foot-small">© <span id="year"></span> Europa Culture. Paris · Porto · Everywhere beauty is missed.</p>
+    <p class="foot-small">© <span id="year"></span> Europa Culture. Paris · Roma · Köln · Everywhere beauty is missed.</p>
+    <p class="credits" id="credits"></p>
   </footer>
 
-  <!-- CART DRAWER -->
   <div class="scrim" data-close-cart></div>
   <aside class="cart" aria-label="Shopping bag">
     <div class="cart-head"><h3>Your bag</h3><button data-close-cart aria-label="Close">Close</button></div>
@@ -117,11 +130,12 @@
       <div class="row"><span>Subtotal</span><span id="cart-subtotal">€0</span></div>
       <div class="row muted"><span>Shipping</span><span id="cart-ship">Free</span></div>
       <button class="btn btn-solid btn-wide" id="checkout">Checkout</button>
-      <p id="checkout-note" class="checkout-note" hidden>Checkout opens with the first drop. Join the list below and we'll hold your size.</p>
+      <p id="checkout-note" class="checkout-note" hidden>Checkout opens with the first drop. Join the list and we'll hold your size.</p>
     </div>
   </aside>
 
   <script src="js/products.js"></script>
+  <script src="js/scenes.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

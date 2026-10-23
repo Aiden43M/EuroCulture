@@ -6,8 +6,10 @@ Pure HTML/CSS/JS. No build step, no dependencies — deploys anywhere static (Gi
 
 ## Structure
 ```
-index.html        Home: hero, collection grid, manifesto, quote, newsletter
+index.html        Home: photo hero carousel, featured-products carousel, manifesto, quote, newsletter
+shop.html         Shop all (full grid)
 product.html      Product page (?id=<product-id>)
+js/scenes.js      Hero carousel photos + credits — swap in your own photos here
 css/style.css     All styling (Cormorant Garamond + Inter, ivory/ink palette)
 js/products.js    Product catalog — edit names, prices, colors, sizes here
 js/app.js         Rendering, cart drawer (localStorage), checkout hook
@@ -27,3 +29,6 @@ Each entry in `js/products.js` has `fabric` (garment color), `ink` (print color)
 
 ## Checkout
 Add a [Stripe Payment Link](https://stripe.com/payments/payment-links) to a product's `stripeLink` field and single-item carts redirect straight to Stripe. For multi-item carts, plug in Shopify Buy Button, Snipcart, or a Stripe Checkout serverless function inside `checkout()` in `js/app.js`.
+
+## Photography
+Hero and background photos are hot-linked from Wikimedia Commons under CC BY-SA licenses; credits render automatically in the footer from `js/scenes.js`. Keep the credits if you keep the photos. For production, download them (or your own shots) into `assets/scenes/` and point `src` at the local files.
