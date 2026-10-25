@@ -10,16 +10,12 @@ window.EC_COLORS = {
   white: { label: "Ivory White",  swatch: "#F4F2EE" }
 };
 
-window.EC_COLLECTIONS = {
-  borders:  "Borders",
-  faith:    "Faith",
-  nations:  "Nations",
-  politics: "Politics"
-};
+// Where the blackjack popup sends collected emails (JSON POST). Empty = kept in the visitor's browser only.
+window.EC_EMAIL_ENDPOINT = "";
 
 const P = (id, name, collection, hero, blurb) => ({
   id, name, collection, hero, blurb,
-  price: 45,
+  price: 35,
   colors: ["grey", "black", "white"],
   sizes: ["XS", "S", "M", "L", "XL", "XXL"],
   stripeLink: ""
@@ -41,4 +37,11 @@ window.EC_PRODUCTS = [
   P("be-like-hungary",                 "Be Like Hungary",                     "nations",  "grey",  "Short, bold, and guaranteed to start a conversation."),
   P("better-far-right-than-far-wrong", "Better To Be Far Right Than Far Wrong", "politics", "black", "The shirt that answers the label before anyone uses it."),
   P("not-far-right-just-right",        "Not Far Right, Just Right",           "politics", "white", "Common sense, printed large.")
+];
+
+// Featured on the home page, in this order, with the colour shown.
+window.EC_FEATURED = [
+  { id: "integrate-or-evacuate",  color: "black" },
+  { id: "make-europe-safe-again", color: "white" },
+  { id: "european-by-culture",    color: "grey" }
 ];

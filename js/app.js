@@ -3,13 +3,13 @@
   const P = window.EC_PRODUCTS || [];
   const S = window.EC_SCENES || [];
   const C = window.EC_COLORS || {};
-  const COL = window.EC_COLLECTIONS || {};
   const CUR = window.EC_CURRENCY || "€";
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const money = (n) => `${CUR}${n.toFixed(2).replace(/\.00$/, "")}`;
   const byId = (id) => P.find((p) => p.id === id);
   const img = (p, color, n) => `assets/products/${p.id}/${color}-${n}.jpg`;
+  const priceHTML = (p) => (p.compareAt ? `<s>${money(p.compareAt)}</s> ` : "") + `<b>${money(p.price)}</b>`;
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---------- Product card ---------- */
@@ -19,13 +19,13 @@
       <div class="pcard-media">
         <img class="pcard-img" src="${img(p, color, 1)}" alt="${p.name} tee in ${C[color].label}, worn" loading="lazy">
         <img class="pcard-alt" src="${img(p, color, 2)}" alt="" loading="lazy" aria-hidden="true">
-        <span class="pcard-no">${String(i + 1).padStart(2, "0")}</span>
+        ${p.compareAt ? '<span class="sale-tag">Sale</span>' : ""}
         <span class="pcard-cta">View piece →</span>
       </div>
       <div class="pcard-body"><div><p class="pcard-name">${p.name}</p>
-        <p class="pcard-meta">${COL[p.collection]} · ${p.colors.length} colours</p>
+        <p class="pcard-meta">T-shirt · ${p.colors.length} colours</p>
         <p class="swatches">${p.colors.map((c) => `<span style="--c:${C[c].swatch}" title="${C[c].label}"></span>`).join("")}</p></div>
-        <p class="pcard-price">${money(p.price)}</p></div></a>`;
+        <p class="pcard-price">${priceHTML(p)}</p></div></a>`;
   }
 
   /* ---------- Hero carousel ---------- */
@@ -90,15 +90,11 @@
     if (!reduced) setInterval(() => !paused && !document.hidden && next(), 3800);
   }
 
-  /* ---------- Collections strip (home) ---------- */
-  function renderCollections() {
-    const el = $("#collections"); if (!el) return;
-    el.innerHTML = Object.entries(COL).map(([key, label]) => {
-      const items = P.filter((p) => p.collection === key);
-      const p = items[0];
-      return `<a class="coll reveal" href="shop.html?c=${key}">
-        <img src="${img(p, p.hero, 2)}" alt="" loading="lazy">
-        <span class="coll-label"><em>${label}</em><small>${items.length} pieces →</small></span></a>`;
+  /* ---------- Featured (home, right under the hero) ---------- */
+  function renderFeatured() {
+    const el = $("#featured-grid"); if (!el) return;
+    el.innerHTML = (window.EC_FEATURED || []).map((f) => {
+      const p = byId(f.id); return p ? card(p, P.indexOf(p), f.color) : "";
     }).join("");
   }
 
@@ -129,7 +125,22 @@
         }).join("");
     const sub = cart.reduce((s, l) => s + byId(l.id).price * l.qty, 0);
     $("#cart-subtotal").textContent = money(sub);
-    $("#cart-ship").textContent = sub >= 100 || sub === 0 ? "Free" : "Calculated at checkout";
+    $("#cart-ship").textContent = count === 1 ? "Add 1 more for free shipping" : "Free";
+    // Blackjack discount
+    let d = null; try { d = JSON.parse(localStorage.getItem("ec_discount")); } catch {}
+    let row = $("#cart-disc");
+    if (d && d.pct) {
+      if (!row) {
+        $("#cart-ship").parentElement.insertAdjacentHTML("beforebegin",
+          `<div class="row disc" id="cart-disc"><span></span><span></span></div><div class="row total" id="cart-total"><span>Total</span><span></span></div>`);
+        row = $("#cart-disc");
+      }
+      const off = Math.round(sub * d.pct) / 100;
+      row.children[0].textContent = `${d.code} (−${d.pct}%)`;
+      row.children[1].textContent = sub ? `−${money(off)}` : "Applied";
+      $("#cart-total").children[1].textContent = money(sub - off);
+      $("#cart-total").hidden = !sub;
+    }
   }
   const openCart = () => document.body.classList.add("cart-open");
   const closeCart = () => document.body.classList.remove("cart-open");
@@ -143,24 +154,7 @@
   /* ---------- Shop page ---------- */
   function renderShop() {
     const grid = $("#shop-grid"); if (!grid) return;
-    const chips = $("#shop-filters");
-    const params = new URLSearchParams(location.search);
-    let filter = params.get("c") || "all";
-    chips.innerHTML = [["all", "All pieces"], ...Object.entries(COL)].map(([k, l]) =>
-      `<button data-f="${k}" aria-pressed="${k === filter}">${l}</button>`).join("");
-    const draw = () => {
-      const list = P.filter((p) => filter === "all" || p.collection === filter);
-      grid.innerHTML = list.map((p, i) => `<div class="reveal in" style="--d:${(i % 3) * 60}ms">${card(p, P.indexOf(p))}</div>`).join("");
-      $("#shop-count").textContent = `${list.length} piece${list.length === 1 ? "" : "s"}`;
-    };
-    chips.addEventListener("click", (e) => {
-      const b = e.target.closest("[data-f]"); if (!b) return;
-      filter = b.dataset.f;
-      $$("[data-f]", chips).forEach((x) => x.setAttribute("aria-pressed", x === b));
-      history.replaceState(null, "", filter === "all" ? "shop.html" : `shop.html?c=${filter}`);
-      draw();
-    });
-    draw();
+    grid.innerHTML = P.map((p, i) => `<div class="reveal in" style="--d:${(i % 3) * 60}ms">${card(p, i)}</div>`).join("");
   }
 
   /* ---------- Product page ---------- */
@@ -177,19 +171,19 @@
         <div class="pdp-thumbs" id="pdp-thumbs"></div>
       </div>
       <div class="pdp-info">
-        <p class="eyebrow">Collection I · ${COL[p.collection]}</p>
+        <p class="eyebrow">T-shirt · Collection I</p>
         <h1 class="pdp-title">${p.name}</h1>
         <p class="pdp-sub">Heavyweight oversized tee · 240gsm cotton</p>
-        <p class="pdp-price">${money(p.price)}</p>
+        <p class="pdp-price">${priceHTML(p)}${p.compareAt ? ' <span class="sale-tag inline">Sale</span>' : ""}</p>
         <p class="pdp-blurb">${p.blurb}</p>
         <p class="label">Colour — <span id="color-name"></span></p>
         <div class="colors" id="colors">${p.colors.map((c) => `<button data-color="${c}" aria-label="${C[c].label}" style="--c:${C[c].swatch}"></button>`).join("")}</div>
         <p class="label">Size</p>
         <div class="sizes" role="radiogroup" aria-label="Size">${p.sizes.map((s) => `<button role="radio" aria-checked="false" data-size="${s}">${s}</button>`).join("")}</div>
         <button class="btn btn-solid btn-wide" id="add">Select a size</button>
-        <ul class="perks"><li>Free EU &amp; US shipping over ${CUR}100</li><li>30-day returns</li><li>Printed to order</li></ul>
+        <ul class="perks"><li>Buy 2, get free shipping</li><li>30-day returns</li><li>Printed to order</li></ul>
         <details open><summary>Details</summary><p>Oversized, dropped-shoulder fit in 240gsm heavyweight cotton. Front print only, back left clean. Take your usual size for a relaxed fit, or size down for a closer cut.</p></details>
-        <details><summary>Shipping &amp; returns</summary><p>Printed to order and shipped in 3–5 business days. Free shipping across the EU &amp; US over ${CUR}100. Free returns within 30 days.</p></details>
+        <details><summary>Shipping &amp; returns</summary><p>Printed to order and shipped in 3–5 business days. Free shipping when you buy 2 or more. Free returns within 30 days.</p></details>
         <details><summary>Care</summary><p>Wash cold, inside out. Hang dry. Do not iron the print. Treat it like a façade: it should last a century.</p></details>
       </div>`;
     const main = $("#pdp-img"), thumbs = $("#pdp-thumbs"), add = $("#add");
@@ -215,9 +209,9 @@
     paint();
     const more = $("#more-grid");
     if (more) {
-      const same = P.filter((x) => x.id !== p.id && x.collection === p.collection);
-      const rest = P.filter((x) => x.id !== p.id && x.collection !== p.collection);
-      more.innerHTML = [...same, ...rest].slice(0, 3).map((x) => card(x, P.indexOf(x))).join("");
+      const rest = P.filter((x) => x.id !== p.id);
+      const start = (P.indexOf(p) + 1) % rest.length;
+      more.innerHTML = [...rest.slice(start), ...rest.slice(0, start)].slice(0, 3).map((x) => card(x, P.indexOf(x))).join("");
     }
   }
 
@@ -229,14 +223,15 @@
 
   function renderFooterShop() {
     const el = $("#foot-shop"); if (!el) return;
-    el.innerHTML = `<h4>Shop</h4><a href="shop.html">All pieces</a>` +
-      Object.entries(COL).map(([k, l]) => `<a href="shop.html?c=${k}">${l}</a>`).join("");
+    el.innerHTML = `<h4>Shop</h4><a href="shop.html">All T-shirts</a>` +
+      (window.EC_FEATURED || []).map((f) => { const p = byId(f.id); return `<a href="product.html?id=${p.id}&color=${f.color}">${p.name}</a>`; }).join("");
   }
 
   /* ---------- Boot ---------- */
   document.addEventListener("DOMContentLoaded", () => {
-    heroCarousel(); productCarousel(); renderCollections(); renderShop(); renderProduct(); renderCart(); renderCredits(); renderFooterShop();
+    heroCarousel(); productCarousel(); renderFeatured(); renderShop(); renderProduct(); renderCart(); renderCredits(); renderFooterShop();
     const y = $("#year"); y && (y.textContent = new Date().getFullYear());
+    document.addEventListener("ec:discount", renderCart);
     document.addEventListener("click", (e) => {
       const t = e.target.closest("[data-open-cart],[data-close-cart],[data-q],#checkout");
       if (!t) return;
