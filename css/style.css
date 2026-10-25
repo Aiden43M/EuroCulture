@@ -428,3 +428,94 @@ details p { color: var(--muted); padding-top: 10px; font-size: 14px; }
   .bj-shoe { width: 32px; height: 46px; }
   .bj-btn { min-width: 110px; }
 }
+
+/* ===================== Mobile: minimal ===================== */
+@media (max-width: 640px) {
+  :root { --head-h: 80px; }
+  .announce { padding: 7px 16px; font-size: 10px; letter-spacing: .14em; }
+  .nav-row { padding: 12px 16px; }
+  .wordmark { font-size: 15px; letter-spacing: .16em; }
+
+  /* hero: headline + one button */
+  .home .hero-content.split { padding: calc(var(--head-h) + 40px) 16px 44px; }
+  .home .hero .eyebrow, .home .hero .btn-ghost, .home .hero-foot { display: none; }
+  .hero-content.split h1 { font-size: 52px; }
+  .hero-content.split .lede { font-size: 15px; margin: 14px auto 24px; max-width: 300px; }
+
+  /* section heads: title left, small text link right */
+  .best { padding: 36px 16px 8px; }
+  .feat-head.flush, .best .feat-head { flex-wrap: nowrap; align-items: baseline; margin-bottom: 18px; }
+  .feat-head .eyebrow { display: none; }
+  .best .feat-head h2, .feat-head h2 { font-size: 30px; }
+  .feat-head .btn { height: auto; padding: 0; border: 0; background: none; color: var(--ink); font-size: 11px; text-decoration: underline; text-underline-offset: 4px; white-space: nowrap; }
+
+  /* two-up product grid, quieter cards */
+  .grid, .grid-3 { grid-template-columns: 1fr 1fr; gap: 22px 12px; }
+  .pcard-body { padding-top: 10px; gap: 2px; flex-direction: column; }
+  .pcard-name, .best .pcard-name { font-size: 15px; line-height: 1.2; }
+  .pcard-meta, .swatches { display: none; }
+  .pcard-price { font: 400 13px var(--sans); }
+  #featured-grid .pcard:first-child { grid-column: 1 / -1; }
+  #featured-grid .pcard:first-child .pcard-name { font-size: 18px; }
+
+  /* cut the extras */
+  .trust, .featured, .marquee, .tenets p, .credits, .crumbs, .pdp-sub, .perks, .bj-sub { display: none; }
+
+  .manifesto { padding: 48px 16px; }
+  .manifesto-head { margin-bottom: 20px; }
+  .manifesto h2 { font-size: 32px; }
+  .tenets { grid-template-columns: 1fr 1fr; border-top: 0; }
+  .tenets li, .tenets li:nth-child(2) { padding: 14px 0; margin: 0; border: 0; border-top: 1px solid rgba(244,240,232,.18); }
+  .tenets h3 { font-size: 24px; margin: 4px 0 0; }
+  .tenets span { font-size: 15px; }
+
+  .quote { padding: 72px 16px; }
+  .quote blockquote { font-size: 30px; }
+  .quote cite { margin-top: 16px; font-size: 10px; }
+
+  .signup-wrap { padding: 48px 16px; gap: 20px; }
+  .signup-wrap h2 { font-size: 30px; }
+  .signup-wrap p { font-size: 14px; }
+
+  .site-footer { padding: 36px 16px 24px; gap: 22px; }
+  .foot-brand { font-size: 22px; }
+  .foot-cols { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .foot-cols > div:first-child { display: none; }
+  .foot-cols a { font-size: 13px; padding: 3px 0; }
+  .foot-small { padding-top: 16px; font-size: 11px; }
+
+  /* shop page */
+  .shop-hero { padding: 32px 16px 0; }
+  .shop-hero h1 { font-size: 40px; }
+  .shop-hero .eyebrow { display: none; }
+  .shop-hero p:last-child { font-size: 14px; margin-top: 8px; }
+  .shop-section { padding: 24px 16px 56px; }
+
+  /* product page */
+  .pdp { padding: 12px 16px 24px; gap: 18px; }
+  .pdp-thumbs { gap: 6px; }
+  .pdp-info .eyebrow { display: none; }
+  .pdp-title { font-size: 32px; }
+  .pdp-price { margin: 10px 0 12px; font-size: 22px; }
+  .pdp-blurb { font-size: 14px; margin-bottom: 18px; }
+  .label { margin-bottom: 8px; }
+  .colors { margin-bottom: 18px; }
+  .colors button { width: 32px; height: 32px; }
+  .sizes { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+  .sizes button { min-width: 0; height: 40px; padding: 0; font-size: 12px; }
+  details { padding: 13px 0; }
+  details:first-of-type { margin-top: 18px; }
+  .pdp + .section { padding: 36px 16px 48px; }
+  #more-grid .pcard:nth-child(3) { display: none; }
+
+  /* discount tab: small pill, out of the way */
+  .bj-tab { left: auto; right: 12px; bottom: 12px; padding: 9px 13px; font-size: 10.5px; letter-spacing: .1em; }
+
+  /* blackjack popup */
+  .bj-panel { padding: 22px 14px 16px; }
+  .bj-eyebrow { font-size: 10px; margin-bottom: 6px; }
+  .bj-panel h2 { font-size: 28px; margin-bottom: 14px; }
+  .bj-table { padding: 12px 10px 14px; }
+  .bj-msg { font-size: 16px; margin: 10px 0; }
+  .bj-skip { margin-top: 12px; }
+}
