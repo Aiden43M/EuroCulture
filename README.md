@@ -1,34 +1,35 @@
 # Europa Culture
 
-Minimal, classical storefront for **Europa Culture** — garments for people who believe buildings should be beautiful. Collection I: *Make Architecture Great Again*.
+Storefront for **Europa Culture — Collection I**: fifteen heavyweight oversized slogan tees in Heather Grey, Noir and Ivory White.
 
-Pure HTML/CSS/JS. No build step, no dependencies — deploys anywhere static (GitHub Pages, Vercel, Netlify, Render).
+Pure HTML/CSS/JS. No build step, no dependencies. Deploys anywhere static (Render Static Site, GitHub Pages, Vercel, Netlify).
 
 ## Structure
 ```
-index.html        Home: photo hero carousel, featured-products carousel, manifesto, quote, newsletter
-shop.html         Shop all (full grid)
-product.html      Product page (?id=<product-id>)
-js/scenes.js      Hero carousel photos + credits — swap in your own photos here
+index.html        Home: architecture photo carousel, featured-product carousel, collections, manifesto, quote, newsletter
+shop.html         Shop all, filterable by collection (?c=borders|faith|nations|politics)
+product.html      Product page (?id=<product-id>&color=grey|black|white): gallery, colour + size pickers
 css/style.css     All styling (Cormorant Garamond + Inter, ivory/ink palette)
-js/products.js    Product catalog — edit names, prices, colors, sizes here
-js/app.js         Rendering, cart drawer (localStorage), checkout hook
-assets/           Favicon
+js/products.js    Catalog: names, collections, prices, colours, sizes, Stripe links
+js/scenes.js      Hero carousel photos + credits
+js/app.js         Rendering, carousels, filters, cart drawer (localStorage), checkout hook
+assets/products/  <id>/<color>-1..4.jpg  (1 model front · 2 flat front · 3 flat back · 4 model back)
 ```
 
 ## Run locally
 ```bash
-python3 -m http.server 8000   # then open http://localhost:8000
+python3 -m http.server 8000   # open http://localhost:8000
 ```
 
-## Deploy on GitHub Pages
-Settings → Pages → Source: `main` branch, `/ (root)`.
+## Deploy on Render
+New → Static Site → this repo · Build command: leave blank · Publish directory: `.`
 
-## Editing products
-Each entry in `js/products.js` has `fabric` (garment color), `ink` (print color) and `lines` (the slogan). Garments render as SVG mockups, so new colorways need no photography. Swap in real product photos later by replacing `garmentSVG()` output with `<img>` tags.
+## Adding a product
+1. Drop four photos per colour into `assets/products/<new-id>/` named `grey-1.jpg … white-4.jpg`.
+2. Add one line to `js/products.js`.
 
 ## Checkout
-Add a [Stripe Payment Link](https://stripe.com/payments/payment-links) to a product's `stripeLink` field and single-item carts redirect straight to Stripe. For multi-item carts, plug in Shopify Buy Button, Snipcart, or a Stripe Checkout serverless function inside `checkout()` in `js/app.js`.
+Set a product's `stripeLink` to a Stripe Payment Link and single-item bags redirect straight to Stripe. For multi-item bags, wire Shopify Buy Button, Snipcart or a Stripe Checkout function into `checkout()` in `js/app.js`.
 
 ## Photography
-Hero and background photos are hot-linked from Wikimedia Commons under CC BY-SA licenses; credits render automatically in the footer from `js/scenes.js`. Keep the credits if you keep the photos. For production, download them (or your own shots) into `assets/scenes/` and point `src` at the local files.
+Hero and quote backgrounds are hot-linked from Wikimedia Commons (CC BY-SA); credits render in the footer from `js/scenes.js`.

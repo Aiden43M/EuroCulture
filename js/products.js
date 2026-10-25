@@ -1,90 +1,44 @@
-// Product catalog. Edit prices, colors and copy here.
+// Europa Culture — Collection I catalog.
+// Images live in assets/products/<id>/<color>-<n>.jpg
+//   1 = model front · 2 = flat lay front · 3 = flat lay back · 4 = model back
 // `stripeLink` (optional): paste a Stripe Payment Link per product to enable direct checkout.
 window.EC_CURRENCY = "€";
 
+window.EC_COLORS = {
+  grey:  { label: "Heather Grey", swatch: "#C9C9C7" },
+  black: { label: "Noir",         swatch: "#151515" },
+  white: { label: "Ivory White",  swatch: "#F4F2EE" }
+};
+
+window.EC_COLLECTIONS = {
+  borders:  "Borders",
+  faith:    "Faith",
+  nations:  "Nations",
+  politics: "Politics"
+};
+
+const P = (id, name, collection, hero, blurb) => ({
+  id, name, collection, hero, blurb,
+  price: 45,
+  colors: ["grey", "black", "white"],
+  sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+  stripeLink: ""
+});
+
 window.EC_PRODUCTS = [
-  {
-    id: "maga-tee-black",
-    name: "Make Architecture Great Again — Tee",
-    colorway: "Noir",
-    type: "tee",
-    fabric: "#111111",
-    ink: "#F4F0E8",
-    price: 45,
-    lines: ["MAKE", "ARCHITECTURE", "GREAT AGAIN"],
-    blurb:
-      "The original. Heavyweight 240gsm organic cotton, boxy fit, serif print set in classical proportion.",
-    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-    stripeLink: ""
-  },
-  {
-    id: "maga-tee-ivory",
-    name: "Make Architecture Great Again — Tee",
-    colorway: "Ivory",
-    type: "tee",
-    fabric: "#EFE9DD",
-    ink: "#141414",
-    price: 45,
-    lines: ["MAKE", "ARCHITECTURE", "GREAT AGAIN"],
-    blurb:
-      "Same message, inverted. Undyed-look ivory cotton with a deep black serif print.",
-    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-    stripeLink: ""
-  },
-  {
-    id: "maga-hoodie-black",
-    name: "Make Architecture Great Again — Hoodie",
-    colorway: "Noir",
-    type: "hoodie",
-    fabric: "#151515",
-    ink: "#F4F0E8",
-    price: 89,
-    lines: ["MAKE", "ARCHITECTURE", "GREAT AGAIN"],
-    blurb:
-      "Brushed-back 420gsm fleece, dropped shoulder, double-lined hood. Built for cold cathedral squares.",
-    sizes: ["S", "M", "L", "XL", "XXL"],
-    stripeLink: ""
-  },
-  {
-    id: "ornament-tee-stone",
-    name: "Ornament Is Not A Crime — Tee",
-    colorway: "Stone",
-    type: "tee",
-    fabric: "#B9B2A5",
-    ink: "#141414",
-    price: 45,
-    lines: ["ORNAMENT", "IS NOT", "A CRIME"],
-    blurb:
-      "A reply, a century late. Garment-dyed stone cotton with a black serif print.",
-    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-    stripeLink: ""
-  },
-  {
-    id: "beauty-tee-black",
-    name: "Bring Back Beauty — Tee",
-    colorway: "Noir",
-    type: "tee",
-    fabric: "#111111",
-    ink: "#F4F0E8",
-    price: 45,
-    lines: ["BRING", "BACK", "BEAUTY"],
-    blurb:
-      "For anyone who has stood in front of a glass box and felt nothing.",
-    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-    stripeLink: ""
-  },
-  {
-    id: "maga-tote",
-    name: "Make Architecture Great Again — Tote",
-    colorway: "Natural",
-    type: "tote",
-    fabric: "#E6DECF",
-    ink: "#141414",
-    price: 28,
-    lines: ["MAKE", "ARCHITECTURE", "GREAT AGAIN"],
-    blurb:
-      "Heavy 12oz canvas, long handles, internal pocket. Carries books on Palladio with ease.",
-    sizes: ["One size"],
-    stripeLink: ""
-  }
+  P("integrate-or-evacuate",           "Integrate Or Evacuate",               "borders",  "grey",  "One line. No footnotes. Heavyweight oversized tee with a bold chest print."),
+  P("respect-the-host",                "Respect The Host",                    "borders",  "black", "Good manners built every great city. Classical serif capitals on heavyweight cotton."),
+  P("love-it-or-leave-it",             "Love It Or Leave It",                 "borders",  "white", "An old ultimatum, set in inscription capitals."),
+  P("make-europe-safe-again",          "Make Europe Safe Again",              "borders",  "grey",  "Walk home at night again. Stacked bold print, oversized fit."),
+  P("i-want-my-streets-back",          "I Want My Streets Back",              "borders",  "black", "For anyone who remembers what the high street used to feel like."),
+  P("christianity-for-europe",         "Christianity For Europe",             "faith",    "white", "The faith that raised the cathedrals. Bold chest print."),
+  P("make-europe-christian-again",     "Make Europe Christian Again",         "faith",    "grey",  "Bells on Sunday. Stacked bold print, heavyweight cotton."),
+  P("deus-vult-always",                "Deus Vult. Always.",                  "faith",    "black", "Two words, nine centuries, still standing."),
+  P("built-by-believers",              "Built By Believers",                  "faith",    "white", "A line map of the continent with the truth set across it: none of it was built by accident."),
+  P("european-by-culture",             "European By Culture",                 "nations",  "grey",  "Not a passport. A way of living. Classical serif capitals."),
+  P("stubborn-like-the-swiss",         "Stubborn Like The Swiss",             "nations",  "black", "Neutral on most things. Not on this."),
+  P("proud-like-poland",               "Proud Like Poland",                   "nations",  "white", "A nation that knows exactly who it is."),
+  P("be-like-hungary",                 "Be Like Hungary",                     "nations",  "grey",  "Short, bold, and guaranteed to start a conversation."),
+  P("better-far-right-than-far-wrong", "Better To Be Far Right Than Far Wrong", "politics", "black", "The shirt that answers the label before anyone uses it."),
+  P("not-far-right-just-right",        "Not Far Right, Just Right",           "politics", "white", "Common sense, printed large.")
 ];
