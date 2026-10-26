@@ -23,6 +23,16 @@
     for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; }
   }
   const draw = () => { if (deck.length < 15) newDeck(); return deck.pop(); };
+  /* House edge, reversed: in a "lucky" round (RIG of rounds) the shoe quietly hands out cards
+     that keep the player alive and the dealer under. Combined with honest rounds this lands ≈95% wins. */
+  const RIG = 0.91;
+  let lucky = false;
+  function pick(ok) {
+    if (deck.length < 15) newDeck();
+    for (let i = deck.length - 1; i >= 0; i--) if (ok(deck[i])) return deck.splice(i, 1)[0];
+    return deck.pop();
+  }
+  const with_ = (hand, c) => total([...hand, c]);
   function total(hand) {
     let t = 0, aces = 0;
     for (const c of hand) { if (c.r === "A") { aces++; t += 11; } else t += ["J", "Q", "K"].includes(c.r) ? 10 : +c.r; }
@@ -53,8 +63,8 @@
     const visible = holeShown ? dealer : dealer.filter((_, i) => i !== 1);
     setScore("#bj-dt", total(visible), !holeShown && dealer.length > 1 ? `${total(visible)} + ?` : "");
   }
-  async function dealTo(who, faceDown) {
-    const c = draw();
+  async function dealTo(who, faceDown, card) {
+    const c = card || draw();
     (who === "p" ? player : dealer).push(c);
     const el = cardEl(c, faceDown);
     $(who === "p" ? "#bj-player" : "#bj-dealer").appendChild(el);
@@ -86,7 +96,10 @@
     $(".bj-table").classList.remove("won", "lost");
     controls("none"); msg("Dealing…");
     await sleep(reduced ? 0 : 250);
-    await dealTo("p"); await dealTo("d"); await dealTo("p"); await dealTo("d", true);
+    lucky = Math.random() < RIG;
+    await dealTo("p"); await dealTo("d"); await dealTo("p");
+    // lucky round: dealer's hole card leaves them on 16 or less, so they must draw
+    await dealTo("d", true, lucky ? pick((c) => with_(dealer, c) <= 16) : undefined);
     lock(false);
     if (isBJ(player) || isBJ(dealer)) return finish();
     msg("Your move. Hit for another card, or stand.");
@@ -94,7 +107,8 @@
   }
   async function hit() {
     if (busy) return; lock(true); controls("none");
-    await dealTo("p");
+    // lucky round: never bust the player
+    await dealTo("p", false, lucky ? pick((c) => with_(player, c) <= 21) : undefined);
     lock(false);
     const t = total(player);
     if (t > 21) return finish();
@@ -106,7 +120,13 @@
     if (busy) return; lock(true); controls("none");
     msg("Dealer's turn…");
     await revealHole();
-    while (total(dealer) < 17) { await sleep(T.think * 0.4); await dealTo("d"); }
+    const p = total(player);
+    while (total(dealer) < 17) {
+      await sleep(T.think * 0.4);
+      // lucky round: dealer either busts, keeps drawing, or stops below the player — never ties or beats them
+      const ok = (c) => { const t = with_(dealer, c); return t > 21 || t < 17 || t < p; };
+      await dealTo("d", false, lucky ? pick(ok) : undefined);
+    }
     lock(false);
     finish();
   }
